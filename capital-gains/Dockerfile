@@ -10,8 +10,8 @@ COPY . /app
 # Install dependencies
 RUN pip install -r requirements.txt
 
-# Expose port 5003
-EXPOSE 5003
+# Expose port 8080
+EXPOSE 8080
 
 # Run the application
 CMD ["python", "capital_gains.py"]
