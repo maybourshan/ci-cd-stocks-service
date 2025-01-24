@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  stocks1:
+    build:
+      context: ./stock-portfolio
+    container_name: stocks1
+    ports:
+      - "5001:8000"
+    expose:
+      - 8000
+    environment:
+      - NINJA_API_KEY=vopFoYntOSunu9wOgno8UQ==6N9s5bNi9ndGWM5I
+      - MONGO_URI=mongodb://mongodb:27017/
+      - SERVICE_NAME=stocks1
+    restart: always
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  capital-gains:
+    build:
+      context: ./capital-gains
+    container_name: capital-gains
+    ports:
+      - "5003:8080"
+    expose:
+      - 8080
+    environment:
+      - STOCKS_URL=http://stocks1:5001
+    restart: always
+
+volumes:
+  mongo_data:
