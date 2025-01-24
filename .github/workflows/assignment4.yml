@@ -1,8 +1,12 @@
 name: assignment4
 
 on: 
-  workflow_dispatch:
+<<<<<<< HEAD
+  workflow_dispatch:  
+=======
+  workflow_dispatch:  # הפעלה ידנית דרך GitHub
 
+>>>>>>> 3cd7ec7 (Added GitHub Actions workflow)
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,10 +14,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker Compose
+      - name: Set up Docker
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
       - name: Build Docker images
         run: docker-compose up --build -d
+
+      - name: Check running containers
+        run: docker ps -a
+
+      - name: Upload build logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: /var/lib/docker/containers/
