@@ -13,8 +13,8 @@ ENV NINJA_API_KEY="vopFoYntOSunu9wOgno8UQ==6N9s5bNi9ndGWM5I"
 # Install dependencies from requirements.txt
 RUN pip install -r requirements.txt
 
-# Expose port 5001
-EXPOSE 5001
+# Expose port 8000
+EXPOSE 8000
 
 # Run the application
 CMD ["python", "app.py"]
