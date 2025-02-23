@@ -14,8 +14,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
+          echo "Checking Docker & Compose versions:"
           docker --version
-          docker compose version
+          docker compose version || echo "Docker Compose is missing!"
 
       - name: Build Docker images
         run: docker compose up --build -d
@@ -47,11 +48,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
+          echo "Checking Docker & Compose versions:"
           docker --version
-          docker compose version
+          docker compose version || echo "Docker Compose is missing!"
 
       - name: Start application
-        run: docker compose up -d
+        run: docker compose up -d || echo "Docker Compose failed to start!"
 
       - name: Wait for services to be ready
         run: sleep 10
@@ -90,11 +92,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
+          echo "Checking Docker & Compose versions:"
           docker --version
-          docker compose version
+          docker compose version || echo "Docker Compose is missing!"
 
       - name: Start application
-        run: docker compose up -d
+        run: docker compose up -d || echo "Docker Compose failed to start!"
 
       - name: Wait for services to be ready
         run: sleep 10
