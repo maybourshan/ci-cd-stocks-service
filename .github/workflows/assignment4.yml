@@ -10,10 +10,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker Compose
+      - name: Install Docker & Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
+          sudo ln -s /usr/bin/docker /usr/local/bin/docker
+          sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
           echo "Checking Docker & Compose versions:"
           docker --version
           docker compose version || echo "Docker Compose is missing!"
@@ -44,10 +47,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker Compose
+      - name: Install Docker & Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
+          sudo ln -s /usr/bin/docker /usr/local/bin/docker
+          sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
           echo "Checking Docker & Compose versions:"
           docker --version
           docker compose version || echo "Docker Compose is missing!"
@@ -88,10 +94,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker Compose
+      - name: Install Docker & Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
+          sudo ln -s /usr/bin/docker /usr/local/bin/docker
+          sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
           echo "Checking Docker & Compose versions:"
           docker --version
           docker compose version || echo "Docker Compose is missing!"
