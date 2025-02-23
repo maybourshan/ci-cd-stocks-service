@@ -10,21 +10,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker & Docker Compose
+      - name: Set up Docker & Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-          echo "Checking Docker & Compose versions:"
+          sudo apt-get install -y docker.io docker-compose
           docker --version
           docker-compose --version
 
       - name: Build Docker images
-        run: |
-          export PATH=$PATH:/usr/local/bin
-          docker-compose up --build -d
+        run: docker-compose up --build -d
 
       - name: Check running containers
         run: docker ps -a
@@ -49,24 +43,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker & Docker Compose
+      - name: Set up Docker & Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-          echo "Checking Docker & Compose versions:"
+          sudo apt-get install -y docker.io docker-compose
           docker --version
           docker-compose --version
 
       - name: Start application
-        run: |
-          export PATH=$PATH:/usr/local/bin
-          docker-compose up -d
+        run: docker-compose up -d
 
       - name: Wait for services to be ready
         run: sleep 10
+
+      - name: Install dependencies for testing
+        run: pip install pytest requests
 
       - name: Run tests
         run: pytest -v tests/assn4_tests.py | tee assn4_test_results.txt
@@ -98,21 +89,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker & Docker Compose
+      - name: Set up Docker & Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-          echo "Checking Docker & Compose versions:"
+          sudo apt-get install -y docker.io docker-compose
           docker --version
           docker-compose --version
 
       - name: Start application
-        run: |
-          export PATH=$PATH:/usr/local/bin
-          docker-compose up -d
+        run: docker-compose up -d
 
       - name: Wait for services to be ready
         run: sleep 10
