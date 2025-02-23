@@ -1,7 +1,7 @@
 name: assignment4
 
 on:
-  workflow_dispatch:  # הפעלה ידנית דרך GitHub
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,15 +10,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker & Docker Compose
+      - name: Install Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
+          sudo apt-get install -y docker.io docker-compose-plugin
           docker --version
-          docker-compose --version
+          docker compose version
 
       - name: Build Docker images
-        run: docker-compose up --build -d
+        run: docker compose up --build -d
 
       - name: Check running containers
         run: docker ps -a
@@ -43,21 +43,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker & Docker Compose
+      - name: Install Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
+          sudo apt-get install -y docker.io docker-compose-plugin
           docker --version
-          docker-compose --version
+          docker compose version
 
       - name: Start application
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Wait for services to be ready
         run: sleep 10
-
-      - name: Install dependencies for testing
-        run: pip install pytest requests
 
       - name: Run tests
         run: pytest -v tests/assn4_tests.py | tee assn4_test_results.txt
@@ -89,15 +86,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker & Docker Compose
+      - name: Install Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
+          sudo apt-get install -y docker.io docker-compose-plugin
           docker --version
-          docker-compose --version
+          docker compose version
 
       - name: Start application
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Wait for services to be ready
         run: sleep 10
