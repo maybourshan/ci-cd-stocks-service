@@ -23,12 +23,25 @@ jobs:
           echo "🛠️ Installing Docker & Docker Compose..."
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          
+
           echo "🔍 Debug: Checking Docker installation..."
           docker --version || echo "❌ Docker installation failed!"
 
           echo "🔍 Debug: Checking Docker Compose installation..."
           docker compose version || echo "❌ Docker Compose installation failed!"
+
+          # 🚀 יצירת קישור סמלי ל-Docker Compose אם הוא לא נמצא
+          if ! command -v docker compose &> /dev/null
+          then
+            echo "⚠️ Docker Compose not found! Trying manual fix..."
+            sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+            sudo ln -s /usr/bin/docker-compose /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            echo "🔄 Retrying Docker Compose check..."
+            docker compose version || echo "❌ Docker Compose still not working!"
+          else
+            echo "✅ Docker Compose is installed correctly!"
+          fi
 
       - name: Debug Info - Docker & Compose Paths
         run: |
@@ -44,16 +57,3 @@ jobs:
 
       - name: Check running containers
         run: docker ps -a
-
-      - name: Create log file
-        run: |
-          echo "$(date -Iminutes)" > log.txt
-          echo "maybourshan" >> log.txt
-          echo "image successfully built" >> log.txt
-          echo "Container up and running" >> log.txt
-
-      - name: Upload log file
-        uses: actions/upload-artifact@v4
-        with:
-          name: log-file
-          path: log.txt
