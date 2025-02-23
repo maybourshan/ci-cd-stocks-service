@@ -14,15 +14,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          sudo ln -s /usr/bin/docker /usr/local/bin/docker
-          sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          echo "Checking Docker & Compose versions:"
+          sudo systemctl start docker
+          sudo usermod -aG docker $USER
+          newgrp docker
+          echo "✅ Docker & Compose installed!"
           docker --version
-          docker compose version || echo "Docker Compose is missing!"
+          docker compose version
 
       - name: Build Docker images
-        run: docker compose up --build -d
+        run: docker compose up --build -d  # שינוי הפקודה
 
       - name: Check running containers
         run: docker ps -a
@@ -51,12 +51,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          sudo ln -s /usr/bin/docker /usr/local/bin/docker
-          sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          echo "Checking Docker & Compose versions:"
+          sudo systemctl start docker
+          sudo usermod -aG docker $USER
+          newgrp docker
+          echo "✅ Docker & Compose installed!"
           docker --version
-          docker compose version || echo "Docker Compose is missing!"
+          docker compose version
 
       - name: Start application
         run: docker compose up -d || echo "Docker Compose failed to start!"
@@ -98,12 +98,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          sudo ln -s /usr/bin/docker /usr/local/bin/docker
-          sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          echo "Checking Docker & Compose versions:"
+          sudo systemctl start docker
+          sudo usermod -aG docker $USER
+          newgrp docker
+          echo "✅ Docker & Compose installed!"
           docker --version
-          docker compose version || echo "Docker Compose is missing!"
+          docker compose version
 
       - name: Start application
         run: docker compose up -d || echo "Docker Compose failed to start!"
