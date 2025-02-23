@@ -1,12 +1,8 @@
 name: assignment4
 
 on: 
-<<<<<<< HEAD
-  workflow_dispatch:  
-=======
   workflow_dispatch:  # הפעלה ידנית דרך GitHub
 
->>>>>>> 3cd7ec7 (Added GitHub Actions workflow)
 jobs:
   build:
     runs-on: ubuntu-latest
