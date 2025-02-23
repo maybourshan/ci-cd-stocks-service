@@ -1,10 +1,10 @@
 version: "3.9"
 
 services:
-  stocks1:
+  stocks:
     build:
       context: ./stock-portfolio
-    container_name: stocks1
+    container_name: stocks
     ports:
       - "5001:8000"
     expose:
@@ -12,8 +12,10 @@ services:
     environment:
       - NINJA_API_KEY=vopFoYntOSunu9wOgno8UQ==6N9s5bNi9ndGWM5I
       - MONGO_URI=mongodb://mongodb:27017/
-      - SERVICE_NAME=stocks1
+      - SERVICE_NAME=stocks
     restart: always
+    depends_on:
+      - mongodb
 
   mongodb:
     image: mongo
@@ -32,8 +34,11 @@ services:
     expose:
       - 8080
     environment:
-      - STOCKS_URL=http://stocks1:5001
+      - STOCKS_URL=http://stocks:8000  # עדכון לכתובת הנכונה בתוך הרשת של Docker
     restart: always
+    depends_on:
+      - stocks
+      - mongodb
 
 volumes:
   mongo_data:
