@@ -14,15 +14,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          sudo systemctl enable docker
-          sudo systemctl start docker
-          sudo usermod -aG docker $USER
-          echo "✅ Docker Installed!"
+          echo "✅ Docker & Compose installed!"
           docker --version
           docker compose version || echo "⚠️ Docker Compose is NOT installed!"
 
       - name: Build Docker images
-        run: docker compose up --build -d  # שינוי הפקודה
+        run: docker compose up --build -d  # ❌ להפסיק להשתמש ב- docker-compose ולשנות ל- docker compose
 
       - name: Check running containers
         run: docker ps -a
@@ -51,10 +48,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          sudo systemctl enable docker
-          sudo systemctl start docker
-          sudo usermod -aG docker $USER
-          echo "✅ Docker Installed!"
+          echo "✅ Docker & Compose installed!"
           docker --version
           docker compose version || echo "⚠️ Docker Compose is NOT installed!"
 
@@ -98,10 +92,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io docker-compose-plugin
-          sudo systemctl enable docker
-          sudo systemctl start docker
-          sudo usermod -aG docker $USER
-          echo "✅ Docker Installed!"
+          echo "✅ Docker & Compose installed!"
           docker --version
           docker compose version || echo "⚠️ Docker Compose is NOT installed!"
 
