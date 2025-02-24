@@ -121,14 +121,14 @@ jobs:
           done
           echo "MongoDB is ready!"
 
-      - name: Wait for Stocks Service to be Ready
+      - name: Wait for Stock Portfolio Service to be Ready
         run: |
-          echo "Waiting for stocks service to be available..."
+          echo "Waiting for stock-portfolio service to be available..."
           until curl -s "http://localhost:5001/stocks" > /dev/null; do
-            echo "Still waiting for stocks service..."
+            echo "Still waiting for stock-portfolio service..."
             sleep 3
           done
-          echo "Stocks service is ready!"
+          echo "Stock portfolio service is ready!"
 
       - name: Ensure query.txt exists
         run: |
@@ -160,7 +160,7 @@ jobs:
             service=$(echo "$line" | cut -d':' -f1)
             query=$(echo "$line" | cut -d':' -f2-)
 
-            if [ "$service" = "stocks" ]; then
+            if [ "$service" = "stock-portfolio" ]; then
               response=$(curl -s "http://localhost:5001/stocks?$query")
             elif [ "$service" = "capital-gains" ]; then
               response=$(curl -s "http://localhost:5003/capital-gains?$query")
