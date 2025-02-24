@@ -1,3 +1,6 @@
+on:
+  workflow_dispatch:  # הפעלה ידנית דרך GitHub
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -55,7 +58,7 @@ jobs:
           docker load --input /tmp/capital_gains_image.tar
 
       - name: Start services with Docker Compose
-        run: docker compose up -d  # שימו לב שאין מקף!
+        run: docker compose up -d  # ✅ כאן השינוי - בלי מקף
 
       - name: Run tests
         run: pytest -v tests/assn4_tests.py | tee assn4_test_results.txt
