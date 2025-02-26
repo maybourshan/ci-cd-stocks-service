@@ -93,15 +93,23 @@ jobs:
       - name: Wait for services to be ready
         run: sleep 10
 
+      - name: Debug - Check if test results file exists before running tests
+        run: ls -l
+
       - name: Run tests
-        run: pytest -v tests/assn4_tests.py >> assn4_test_results.txt || true
+        run: pytest -v tests/assn4_tests.py | tee assn4_test_results.txt
+
+      - name: Debug - Show test results file after tests
+        run: |
+          ls -l assn4_test_results.txt
+          cat assn4_test_results.txt || echo "assn4_test_results.txt is empty"
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: assn4_test_results
-          path: assn4_test_results.txt
+          path: ./
 
       - name: Shut down Docker Compose
         run: docker-compose down
