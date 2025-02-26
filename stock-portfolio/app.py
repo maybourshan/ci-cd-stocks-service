@@ -1,9 +1,13 @@
 from flask import Flask, request, jsonify
+import re
 from datetime import datetime
 import os
 import requests
 import uuid
 from pymongo import MongoClient
+import re
+
+
 
 app = Flask(__name__)
 
@@ -18,19 +22,8 @@ stocks_collection = db['stocks']  # Collection name
 API_KEY = os.getenv("NINJA_API_KEY")
 
 def is_valid_date(date_str):
-    print(f"Validating date: {date_str}")
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
-        print("Regex failed")
-        return False
-    try:
-        dt = datetime.strptime(date_str, "%Y-%m-%d")
-        valid = dt.strftime("%Y-%m-%d") == date_str
-        print(f"Parsed successfully, valid? {valid}")
-        return valid
-    except ValueError:
-        print("Parsing failed")
-        return False
-
+    """ Validates if the date format is correct (YYYY-MM-DD) """
+    return bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str))
 
 # Function to fetch stock price
 def get_stock_price(symbol):
