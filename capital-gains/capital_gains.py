@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import os
 import requests
 
-app = Flask(__name__)
+app = Flask(_name_)
 
 # Base URL for stocks service (only one instance now)
 STOCKS_URL = os.getenv("STOCKS_URL", "http://stocks1:5001")
@@ -81,6 +81,6 @@ def calculate_capital_gains():
 def kill_container():
     os._exit(1)
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     port = os.getenv("PORT", 8080)
     app.run(host="0.0.0.0", port=port, debug=True)
