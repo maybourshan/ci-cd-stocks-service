@@ -79,9 +79,9 @@ jobs:
       - name: Log Container Start Status
         run: |
           if docker ps | grep -q "stocks" && docker ps | grep -q "capital-gains"; then
-            echo "✅ Containers are up and running!" >> log.txt
+            echo "Container up and running" >> log.txt
           else
-            echo "❌ ERROR: Containers failed to start!" >> log.txt
+            echo "ERROR: Containers failed to start!" >> log.txt
             docker ps -a
             exit 1
           fi
@@ -129,9 +129,9 @@ jobs:
       - name: Append Test Results to Log
         run: |
           if grep -q "failed" assn4_test_results.txt; then
-            echo "❌ Tests failed!" >> log.txt
+            echo "tests failed" >> log.txt
           else
-            echo "✅ All tests passed!" >> log.txt
+            echo "tests succeeded" >> log.txt
           fi
 
       - name: Upload Final Log File
