@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import os
 import requests
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Base URL for stocks service (only one instance now)
 STOCKS_URL = os.getenv("STOCKS_URL", "http://stocks1:5001")
@@ -62,7 +62,7 @@ def calculate_capital_gains():
         current_price = get_current_price(symbol)  # Fetch current price
         if current_price is None:
             current_price = 0  # Handle API failure case
-        purchase_price = stock['purchase price']
+            purchase_price = stock.get('purchase price', stock.get('purchase_price', 0))
         shares = stock['shares']
         gain = (current_price - purchase_price) * shares
         total_gains += gain
@@ -81,6 +81,6 @@ def calculate_capital_gains():
 def kill_container():
     os._exit(1)
 
-if _name_ == "_main_":
-    port = os.getenv("PORT", 8080)
+if __name__ == "__main__":
+    port = os.getenv("PORT", 5003)
     app.run(host="0.0.0.0", port=port, debug=True)
