@@ -193,10 +193,6 @@ jobs:
       - name: Ensure response.txt exists
         run: rm -f response.txt && touch response.txt
 
-      # ✅ הוספת פקודת ריסט לפני הוספת המניות
-      - name: Reset stocks database before adding new stocks
-        run: curl -X DELETE "http://localhost:5001/stocks/reset"
-
       - name: Add 6 stock entries before queries
         run: |
           stocks=(
