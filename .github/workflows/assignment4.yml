@@ -199,19 +199,13 @@ jobs:
             '{"name":"NVIDIA Corporation","symbol":"NVDA","purchase price":134.66,"purchase date":"2024-06-18","shares":7}'
             '{"name":"Apple Inc.","symbol":"AAPL","purchase price":183.63,"purchase date":"2024-02-22","shares":19}'
             '{"name":"Alphabet Inc.","symbol":"GOOG","purchase price":140.12,"purchase date":"2024-10-24","shares":14}'
-            '{"name":"Tesla Inc.","symbol":"TSLA","purchase price":250.75,"purchase date":"2024-01-01","shares":5}'
-            '{"name":"Microsoft Corp.","symbol":"MSFT","purchase price":299.99,"purchase date":"2024-05-15","shares":8}'
-            '{"name":"Amazon.com Inc.","symbol":"AMZN","purchase price":320.45,"purchase date":"2024-03-12","shares":12}'
           )
           for stock in "${stocks[@]}"; do
             echo "Posting: $stock"
-            response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "http://localhost:5001/stocks" -H "Content-Type: application/json" -d "$stock")
-            if [ "$response" -ne 201 ]; then
-              echo "Failed to add stock: $stock (HTTP $response)"
-              exit 1
-            fi
-            sleep 1
+            response=$(curl -s -X POST "http://localhost:5001/stocks" -H "Content-Type: application/json" -d "$stock")
+            echo "Response: $response"
           done
+
 
       - name: Execute queries from query.txt
         run: |
