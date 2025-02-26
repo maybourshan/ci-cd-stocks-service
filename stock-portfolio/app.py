@@ -17,6 +17,21 @@ stocks_collection = db['stocks']  # Collection name
 # Read the API key from the environment variable
 API_KEY = os.getenv("NINJA_API_KEY")
 
+def is_valid_date(date_str):
+    print(f"Validating date: {date_str}")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
+        print("Regex failed")
+        return False
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        valid = dt.strftime("%Y-%m-%d") == date_str
+        print(f"Parsed successfully, valid? {valid}")
+        return valid
+    except ValueError:
+        print("Parsing failed")
+        return False
+
+
 # Function to fetch stock price
 def get_stock_price(symbol):
     url = f"https://api.api-ninjas.com/v1/stockprice?ticker={symbol}"
@@ -49,11 +64,15 @@ def manage_stocks():
 
     elif request.method == 'POST':
         print(f"Received data: {request.json}")
-
         data = request.json
         if not all(k in data for k in ('symbol', 'purchase price', 'shares')):
             print("Malformed data received")
             return jsonify({"error": "Malformed data"}), 400
+
+        # Validate date format (must be YYYY-MM-DD)
+        purchase_date = data.get("purchase date", datetime.today().strftime("%Y-%m-%d"))
+        if not is_valid_date(purchase_date):
+            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
 
         # Check if stock already exists in the current portfolio
         existing_stock = stocks_collection.find_one({"symbol": data['symbol']})
@@ -67,12 +86,18 @@ def manage_stocks():
             'name': data.get('name', 'NA'),
             'symbol': data['symbol'],
             'purchase price': round(data['purchase price'], 2),
-            'purchase date': data.get('purchase date', 'NA'),
+            'purchase date': purchase_date,
             'shares': int(data['shares']),
         }
         stocks_collection.insert_one(stock)
         print(f"Added stock: {stock}")
         return jsonify({'id': stock['id']}), 201
+
+# Endpoint to reset the database (used in tests)
+@app.route('/stocks/reset', methods=['DELETE'])
+def reset_stocks():
+    stocks_collection.delete_many({})
+    return jsonify({"message": "Database reset successfully"}), 200
 
 # Managing a stock by ID (GET, PUT, DELETE)
 @app.route('/stocks/<string:id>', methods=['GET', 'PUT', 'DELETE'])
@@ -90,11 +115,17 @@ def manage_stock_by_id(id):
         stock = stocks_collection.find_one({"id": id})
         if not stock:
             return jsonify({"error": "Not found"}), 404
+
+        # Validate date format if provided (must be YYYY-MM-DD)
+        purchase_date = data.get("purchase date", stock["purchase date"])
+        if not is_valid_date(purchase_date):
+            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
+
         update_data = {
             "name": data.get("name", stock["name"]),
             "symbol": data.get("symbol", stock["symbol"]).upper(),
             "purchase price": round(float(data.get("purchase price", stock["purchase price"])), 2),
-            "purchase date": data.get("purchase date", stock["purchase date"]),
+            "purchase date": purchase_date,
             "shares": int(data.get("shares", stock["shares"]))
         }
         stocks_collection.update_one({"id": id}, {"$set": update_data})
